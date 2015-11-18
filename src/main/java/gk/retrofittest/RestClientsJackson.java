@@ -40,13 +40,26 @@ public class RestClientsJackson<T> {
     //DENGAN CONVERTER JACKSON
     public Apis getApiServicesJackson() {
 
-        Log.w("API NULL", "API NULL, INIT LAGI");
+        Retrofit.Builder retrobuilder = new Retrofit.Builder();
+        retrobuilder.baseUrl(ALAMAT_SERVERS);
+        retrobuilder.client(mOkHttpClient);
+
+        retrobuilder.addConverterFactory(new JacksonJrConverter<>(mClass));
+
+        Retrofit retrofits = retrobuilder.build();
+
+        return retrofits.create(Apis.class);
+    }
+
+
+    //DENGAN CONVERTER JACKSON JR LIST ARRAY
+    public Apis getApiServicesJacksonArray() {
 
         Retrofit.Builder retrobuilder = new Retrofit.Builder();
         retrobuilder.baseUrl(ALAMAT_SERVERS);
         retrobuilder.client(mOkHttpClient);
 
-        retrobuilder.addConverterFactory(new JacksonJrConverters<>(mClass));
+        retrobuilder.addConverterFactory(new JacksonJrConverter<>(mClass));
 
         Retrofit retrofits = retrobuilder.build();
 

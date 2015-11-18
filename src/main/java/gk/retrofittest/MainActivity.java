@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gk.retrofittest.models.ModelRespon;
+import gk.retrofittest.models.ModelResponList;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -36,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         Button tombolambildatajakson = (Button) findViewById(R.id.tombolambildatajakson);
         tombolambildatajakson.setOnClickListener(listenertombol);
+
+        Button tombollistdatajackson = (Button) findViewById(R.id.tombolambillistjackson);
+        tombollistdatajackson.setOnClickListener(listenertombol);
 
         tekshasil = (TextView) findViewById(R.id.tekshasil);
 
@@ -87,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
                     ambilDataJackson();
 
                     break;
+
+                case R.id.tombolambillistjackson :
+
+                    showProgress();
+                    ambilDataJacksonList();
+                    break;
             }
         }
     };
@@ -130,6 +143,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
+    private void ambilDataJacksonList() {
+
+        RestClientsJackson<ModelResponList> restClientsJackson = new RestClientsJackson<>(ModelResponList.class);
+        Apis apisJr = restClientsJackson.getApiServicesJacksonArray();
+
+        Call<List<ModelResponList>> listCall = apisJr.getDataModelList();
+
+        listCall.enqueue(new Callback<List<ModelResponList>>() {
+            @Override
+            public void onResponse(Response<List<ModelResponList>> response, Retrofit retrofit) {
+
+                progressbar.dismiss();
+                List<ModelResponList> listsModelRespon = response.body();
+
+                if (response.isSuccess()) {
+
+                    Log.w("SUKSES", " SUKSES JACKSON JR");
+
+                    String responstr = "Results ID panjang array " + listsModelRespon.size();
+
+                    tekshasil.setText(responstr);
+                } else {
+                    String result = "Response none";
+                    tekshasil.setText(result);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+
+                t.printStackTrace();
+                progressbar.dismiss();
+
+                tekshasil.setText(t.getMessage());
+            }
+        });
+    }
+
+
+
+
 
 
     private void ambilDataStr() {

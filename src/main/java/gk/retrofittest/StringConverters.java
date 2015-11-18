@@ -25,7 +25,7 @@ public class StringConverters extends Converter.Factory {
     public Converter<ResponseBody, ?> fromResponseBody(Type type, Annotation[] annotations) {
         super.fromResponseBody(type, annotations);
 
-        if (String.class.equals(type)) {
+        if (String.class == type) {
 
             return new Converter<ResponseBody, String>() {
                 @Override
@@ -43,7 +43,7 @@ public class StringConverters extends Converter.Factory {
     public Converter<?, RequestBody> toRequestBody(Type type, Annotation[] annotations) {
         super.toRequestBody(type, annotations);
 
-        if (String.class.equals(type)) {
+        if (String.class == type) {
             return new Converter<String, RequestBody>() {
                 @Override
                 public RequestBody convert(String value) throws IOException {
